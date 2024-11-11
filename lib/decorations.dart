@@ -7,4 +7,10 @@ class AppDecorations {
                 color: _targetColor,
     );
   }
+
+  static InputDecoration inputDecoration(){
+    return InputDecoration(
+      labelText: 'Enter RGB values (R,G,B)'
+    );
+  }
 }

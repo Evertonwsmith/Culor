@@ -1,0 +1,25 @@
+{
+  "hosting": {
+    "source": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "frameworksBackend": {
+      "region": "us-west1"
+    }
+  },
+  "flutter": {
+    "platforms": {
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "evertonsmithdartprojects",
+          "configurations": {
+            "web": "1:359287719351:web:824cd8328eaf8fe57cd432"
+          }
+        }
+      }
+    }
+  }
+}

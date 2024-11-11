@@ -2,8 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'decorations.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp(const MainApp());
 }
 
@@ -30,12 +36,14 @@ class _GamePageState extends State<GamePage> {
   late Color _userColor;
   late Color _previousColor;
   late int _score;
+  late Text buttonText; 
   TextEditingController _controller = TextEditingController();
 
 
   @override
   void initState() {
     super.initState();
+    buttonText = Text("Click for answer");
     _score = 0;
     _previousColor = Colors.black;
     _targetColor = Color.fromARGB(255, Random().nextInt(256), Random().nextInt(256), Random().nextInt(256));
@@ -43,6 +51,7 @@ class _GamePageState extends State<GamePage> {
   }
 
   void _startNewGame() {
+    buttonText = Text("Click for answer");
     _previousColor = _targetColor;
     _targetColor = Color.fromARGB(255, Random().nextInt(256), Random().nextInt(256), Random().nextInt(256));
     _userColor = Colors.black;
@@ -53,6 +62,15 @@ class _GamePageState extends State<GamePage> {
     setState(() {
       _score += 50 - diff;
       _startNewGame();
+    });
+  }
+
+ void _showAnswer() {
+    setState(() {
+      buttonText = Text(
+              'Current Color: ${_targetColor.red}, ${_targetColor.green}, ${_targetColor.blue}',
+              style: TextStyle(fontSize: 20),
+      );
     });
   }
 
@@ -106,9 +124,7 @@ class _GamePageState extends State<GamePage> {
                 _calculateScore();
                 _controller.clear();
               },
-              decoration: InputDecoration(
-                labelText: 'Enter RGB values (R,G,B)',
-              ),
+              decoration: AppDecorations.inputDecoration(),
               textAlign: TextAlign.center,
             ),
             ),
@@ -125,13 +141,15 @@ class _GamePageState extends State<GamePage> {
             ),
             //**for testing reasons */
             SizedBox(height: 20),
-            Text(
-              'Current Color: ${_targetColor.red}, ${_targetColor.green}, ${_targetColor.blue}',
-              style: TextStyle(fontSize: 20),
-            ),
+            // Text(
+            //   'Current Color: ${_targetColor.red}, ${_targetColor.green}, ${_targetColor.blue}',
+            //   style: TextStyle(fontSize: 20),
+            // ),
+            ElevatedButton(onPressed: _showAnswer, child: buttonText),           
           ],
         ),
       ),
     );
   }
+  
 }
